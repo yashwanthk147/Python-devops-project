@@ -24,8 +24,13 @@ spec:
       containers:
       - name: django-app
         image: yashwanthkotha/django-app:v1
-        ports:
-        - containerPort: 8000
+        volumeMounts:
+        - name: db-connection
+          mountPath: /opt
+      volumes:
+      - name: db-connection
+        configMap:
+          name: django-cm
 ---
 apiVersion: v1
 kind: Service
@@ -42,7 +47,9 @@ spec:
   type: NodePort
 
 
-
-
-
-
+          #env: 
+          #- name: DB-PORT
+          #valueFrom:
+          # configMapKeyRef:
+          #   name: django-cm
+          #   key: db-port
